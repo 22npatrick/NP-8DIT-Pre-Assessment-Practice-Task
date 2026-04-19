@@ -26,7 +26,7 @@ class InfoCollectorGUI:
         self.lb1 = Label(self.f1, text = "Collecting Person Data", bg="pink")
         self.lb1.grid(row = 0, column = 0)
 
-        self.bt1 = Button(self.f1, text = "Show all",  command=lambda: self.switch_frame(1))
+        self.bt1 = Button(self.f1, text = "Show all",  command=lambda: self.switch_frame(1), state = 'disabled')
         self.bt1.grid(row = 0, column = 2)
 
         self.lb2 = Label(self.f1, text = "First Name")
@@ -75,10 +75,10 @@ class InfoCollectorGUI:
         self.lb8 = Label(self.f2, text = "Age")
         self.lb8.grid(row = 4, column = 0)
 
-        self.sv_age = StringVar()
-        self.sv_age.set("None")
+        self.iv_age = IntVar()
+        self.iv_age.set("None")
         
-        self.lb9 = Label(self.f2, textvariable = self.sv_age)
+        self.lb9 = Label(self.f2, textvariable = self.iv_age)
         self.lb9.grid(row = 4, column = 2)
 
         self.sv_phone_status = StringVar()
@@ -87,7 +87,7 @@ class InfoCollectorGUI:
         self.lb10 = Label(self.f2, textvariable = self.sv_phone_status)
         self.lb10.grid(row = 6, column = 0, columnspan = 3)
 
-        self.bt4 = Button(self.f2, text = "Previous", state = 'disabled')
+        self.bt4 = Button(self.f2, text = "Previous", state = 'disabled', command = self.prev)
         self.bt4.grid(row = 8, column = 0)
         
         self.bt5 = Button(self.f2, text = "Next", command = self.next)
@@ -114,8 +114,13 @@ class InfoCollectorGUI:
         self.v.set(0)
         self.e1.focus()
         self.sv_name.set(self.list_all_people[0].name) 
-        self.sv_age.set(self.list_all_people[0].age)
-        self.sv_phone_status.set(self.list_all_people[0].phone_status)
+        self.iv_age.set(self.list_all_people[0].age)
+        if self.list_all_people[0].phone_status == 0:
+            self.sv_phone_status.set("Person does not have a mobile phone")
+        else:
+            self.sv_phone_status.set("Person does have a mobile phone")
+        self.bt1.configure(state = 'active')
+        
     
     def next(self):
         len_list = len(self.list_all_people)
@@ -124,21 +129,33 @@ class InfoCollectorGUI:
         else:
             self.page_num += 1
             self.sv_name.set(self.list_all_people[self.page_num-1].name) 
-            self.sv_age.set(self.list_all_people[self.page_num-1].age)
-            self.sv_phone_status.set(self.list_all_people[self.page_num-1].phone_status)
+            self.iv_age.set(self.list_all_people[self.page_num-1].age)
+            if self.list_all_people[self.page_num-1].phone_status == 0:
+                self.sv_phone_status.set("Person does not have a mobile phone")
+            else:
+                self.sv_phone_status.set("Person does have a mobile phone")
         self.bt4.configure(state = 'active')
         if self.page_num == len_list:
             self.bt5.configure(state = 'disabled')
         print(self.page_num)
-                    
+    
+    def prev(self):
+        if self.page_num == 1:
+            self.bt4.configure(state = 'disabled')
+        else:
+            self.page_num -= 1
+            self.sv_name.set(self.list_all_people[self.page_num-1].name) 
+            self.iv_age.set(self.list_all_people[self.page_num-1].age)
+            if self.list_all_people[self.page_num-1].phone_status == 0:
+                self.sv_phone_status.set("Person does not have a mobile phone")
+            else:
+                self.sv_phone_status.set("Person does have a mobile phone")
+        self.bt5.configure(state = 'active')
+        if self.page_num == 1:
+            self.bt4.configure(state = 'disabled')
+        print(self.page_num)
             
-
-
-
-
-
-
-
+            
 if __name__=="__main__":
     root = Tk()
     buttons = InfoCollectorGUI(root)
