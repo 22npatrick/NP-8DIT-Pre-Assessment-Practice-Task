@@ -18,6 +18,8 @@ class InfoCollectorGUI:
         self.v = IntVar()
         self.v.set(0)
 
+        self.num_people = 0
+
         self.list_all_people = []
 
         #Frame 1
@@ -49,7 +51,7 @@ class InfoCollectorGUI:
         self.rb2.grid(row = 8, column = 2)
 
         self.bt2 = Button(self.f1, text = "Enter Data",  command=self.data_collecter)
-        self.bt2.grid(row = 0, column = 2)
+        self.bt2.grid(row = 10, column = 0, columnspan = 3)
 
 
         #Frame 2
@@ -60,27 +62,37 @@ class InfoCollectorGUI:
         self.bt3 = Button(self.f2, text = "Add New Person", command=lambda: self.switch_frame(0))
         self.bt3.grid(row = 0, column = 2)
 
+        
         self.lb6 = Label(self.f2, text = "First Name")
         self.lb6.grid(row = 2, column = 0)
 
-        self.lb7 = Label(self.f2, text = "First Name of persom")
+        self.sv_name = StringVar()
+        self.sv_name.set("None")
+        self.lb7 = Label(self.f2, textvariable = self.sv_name)
         self.lb7.grid(row = 2, column = 2)
+
 
         self.lb8 = Label(self.f2, text = "Age")
         self.lb8.grid(row = 4, column = 0)
 
-        self.lb9 = Label(self.f2, text = "Age of person")
+        self.sv_age = StringVar()
+        self.sv_age.set("None")
+        
+        self.lb9 = Label(self.f2, textvariable = self.sv_age)
         self.lb9.grid(row = 4, column = 2)
 
-        self.lb10 = Label(self.f2, text = 'Person (has)/(does not has) a mobile phone')
+        self.sv_phone_status = StringVar()
+        self.sv_phone_status.set("None")
+
+        self.lb10 = Label(self.f2, textvariable = self.sv_phone_status)
         self.lb10.grid(row = 6, column = 0, columnspan = 3)
 
-        self.bt4 = Button(self.f2, text = "Previous")
+        self.bt4 = Button(self.f2, text = "Previous", state = 'disabled')
         self.bt4.grid(row = 8, column = 0)
         
         self.bt5 = Button(self.f2, text = "Next")
         self.bt5.grid(row = 8, column = 2)
-
+        #"Person (has)/(does not has) a mobile phone"
         #grid f1
         self.f1.grid()
     def switch_frame(self, amount):
@@ -101,6 +113,10 @@ class InfoCollectorGUI:
         self.e2.delete(0, END)
         self.v.set(0)
         self.e1.focus()
+        self.sv_name.set(self.list_all_people[0].name) 
+        self.sv_age.set(self.list_all_people[0].age)
+        self.sv_phone_status.set(self.list_all_people[0].phone_status)
+
 
 
 
