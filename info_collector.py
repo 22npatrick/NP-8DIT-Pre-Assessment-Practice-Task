@@ -96,7 +96,11 @@ class InfoCollectorGUI:
         """" Creates a Person object using the data entered and adds it into the 
         list of all people"""
         self.list_all_people.append(Person(self.e1.get(),self.e2.get(), self.v.get()))
-
+        #Clears frame page
+        self.e1.delete(0, END)
+        self.e2.delete(0, END)
+        self.v.set(0)
+        self.e1.focus()
 
 
 
