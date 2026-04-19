@@ -107,18 +107,23 @@ class InfoCollectorGUI:
 
     def data_collecter(self):
         """
-        Provides an error message if Name is over 16 characters long, age in negitive or not an interger.
+        Provides an error message if Name is over 16 characters long or age is not a postive interge.
+        Also Provides an error message when nothing has been entered into the entry widgets.
         Creates a Person object using the data entered and adds it into the list of all people.
         """
         #If name entered is over 16 characters long an error message will be displayed
         if len(str(self.e1.get())) > 16:
             messagebox.showerror("ErroR", "Name can't be over 16 characters")
+        elif len(str(self.e1.get())) == 0:
+            messagebox.showerror("ErroR", "You have to type in a name")
+        elif len(str(self.e2.get())) == 0:
+            messagebox.showerror("ErroR", "You have to type in an age")
         else:
             #Checks if the age entered is an interger and will displayed an error message if so
             try:
-                #Checks if the age entered is negative and will displayed an error message if so
-                if int((self.e2.get())) < 0:
-                    messagebox.showerror("ErroR", "Age can not be negative")
+                #Checks if the age entered is not a postive interger and will displayed an error message if so
+                if int((self.e2.get())) <= 0:
+                    messagebox.showerror("ErroR", "Age has to be positive")
                 else:
                     #Creates a Person object using the data entered and adds it into the list of all people
                     self.list_all_people.append(Person(self.e1.get(),self.e2.get(), self.v.get()))
