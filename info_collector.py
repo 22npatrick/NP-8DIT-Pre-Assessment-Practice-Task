@@ -18,6 +18,8 @@ class InfoCollectorGUI:
         self.v = IntVar()
         self.v.set(0)
 
+        self.list_all_people = []
+
         #Frame 1
         self.lb1 = Label(self.f1, text = "Collecting Person Data", bg="pink")
         self.lb1.grid(row = 0, column = 0)
@@ -82,6 +84,7 @@ class InfoCollectorGUI:
         #grid f1
         self.f1.grid()
     def switch_frame(self, amount):
+        """" Switches between the 2 frames"""
         if amount == 1:
             self.f1.grid_forget()
             self.f2.grid()
@@ -90,12 +93,11 @@ class InfoCollectorGUI:
             self.f1.grid()
 
     def data_collecter(self):
-        print(f"Name {self.e1.get()}")
-        print(f"Age {self.e2.get()}")
-        if self.v.get() == 0:
-            print("no mobile")
-        else:
-            print("has mobile")
+        """" Creates a Person object using the data entered and adds it into the 
+        list of all people"""
+        self.list_all_people.append(Person(self.e1.get(),self.e2.get(), self.v.get()))
+
+
 
 
 
