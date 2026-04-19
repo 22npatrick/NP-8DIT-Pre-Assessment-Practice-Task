@@ -9,7 +9,7 @@ class InfoCollectorGUI:
         self.f2 = Frame(parent)
 
         self.v = IntVar()
-        self.v.set(None)
+        self.v.set(0)
 
         #Frame 1
         self.lb1 = Label(self.f1, text = "Collecting Person Data", bg="pink")
@@ -39,13 +39,17 @@ class InfoCollectorGUI:
         self.rb2 = Radiobutton(self.f1, variable = self.v, value = 1, text = "yes")
         self.rb2.grid(row = 8, column = 2)
 
+        self.bt2 = Button(self.f1, text = "Enter Data",  command=self.data_collecter)
+        self.bt2.grid(row = 0, column = 2)
+
+
         #Frame 2
 
         self.lb5 = Label(self.f2, text = "Displaying Person Data", bg="pink" )
         self.lb5.grid(row = 0, column = 0)
 
-        self.bt2 = Button(self.f2, text = "Add New Person", command=lambda: self.switch_frame(0))
-        self.bt2.grid(row = 0, column = 2)
+        self.bt3 = Button(self.f2, text = "Add New Person", command=lambda: self.switch_frame(0))
+        self.bt3.grid(row = 0, column = 2)
 
         self.lb6 = Label(self.f2, text = "First Name")
         self.lb6.grid(row = 2, column = 0)
@@ -62,11 +66,11 @@ class InfoCollectorGUI:
         self.lb10 = Label(self.f2, text = 'Person (has)/(does not has) a mobile phone')
         self.lb10.grid(row = 6, column = 0, columnspan = 3)
 
-        self.bt3 = Button(self.f2, text = "Previous")
-        self.bt3.grid(row = 8, column = 0)
+        self.bt4 = Button(self.f2, text = "Previous")
+        self.bt4.grid(row = 8, column = 0)
         
-        self.bt4 = Button(self.f2, text = "Next")
-        self.bt4.grid(row = 8, column = 2)
+        self.bt5 = Button(self.f2, text = "Next")
+        self.bt5.grid(row = 8, column = 2)
 
         #grid f1
         self.f1.grid()
@@ -77,6 +81,16 @@ class InfoCollectorGUI:
         else:
             self.f2.grid_forget()
             self.f1.grid()
+
+    def data_collecter(self):
+        print(f"Name {self.e1.get()}")
+        print(f"Age {self.e2.get()}")
+        if self.v.get() == 0:
+            print("no mobile")
+        else:
+            print("has mobile")
+
+
 
 
 if __name__=="__main__":
