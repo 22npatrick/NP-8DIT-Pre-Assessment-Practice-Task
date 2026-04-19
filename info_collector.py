@@ -1,17 +1,18 @@
 """This is a program to collect information"""
 
 from tkinter import *
+from tkinter import messagebox
 
 class Person:
     def __init__(self, name, age, phone_status):
+        """Initializing Variables."""
         self.name = name
         self.age = age
         self.phone_status = phone_status
 
-
 class InfoCollectorGUI:
     def __init__(self, parent):
-        """ Constructor function"""
+        """ Constructor function."""
         self.f1 = Frame(parent)
         self.f2 = Frame(parent)
 
@@ -19,7 +20,6 @@ class InfoCollectorGUI:
         self.v.set(0)
 
         self.list_all_people = []
-
         self.page_num = 1
 
         #Frame 1
@@ -53,48 +53,40 @@ class InfoCollectorGUI:
         self.bt2 = Button(self.f1, text = "Enter Data",  command=self.data_collecter)
         self.bt2.grid(row = 10, column = 0, columnspan = 3)
 
-
         #Frame 2
-
         self.lb5 = Label(self.f2, text = "Displaying Person Data", bg="pink" )
         self.lb5.grid(row = 0, column = 0)
 
         self.bt3 = Button(self.f2, text = "Add New Person", command=lambda: self.switch_frame(0))
         self.bt3.grid(row = 0, column = 2)
 
-        
         self.lb6 = Label(self.f2, text = "First Name")
         self.lb6.grid(row = 2, column = 0)
 
         self.sv_name = StringVar()
-        self.sv_name.set("None")
         self.lb7 = Label(self.f2, textvariable = self.sv_name)
         self.lb7.grid(row = 2, column = 2)
-
 
         self.lb8 = Label(self.f2, text = "Age")
         self.lb8.grid(row = 4, column = 0)
 
         self.iv_age = IntVar()
-        self.iv_age.set("None")
-        
         self.lb9 = Label(self.f2, textvariable = self.iv_age)
         self.lb9.grid(row = 4, column = 2)
 
         self.sv_phone_status = StringVar()
-        self.sv_phone_status.set("None")
-
         self.lb10 = Label(self.f2, textvariable = self.sv_phone_status)
         self.lb10.grid(row = 6, column = 0, columnspan = 3)
 
         self.bt4 = Button(self.f2, text = "Previous", state = 'disabled', command = self.prev)
         self.bt4.grid(row = 8, column = 0)
         
-        self.bt5 = Button(self.f2, text = "Next", command = self.next)
+        self.bt5 = Button(self.f2, text = "Next", state = 'disabled', command = self.next)
         self.bt5.grid(row = 8, column = 2)
-        #"Person (has)/(does not has) a mobile phone"
-        #grid f1
+
+        #Displays grid 1
         self.f1.grid()
+
     def switch_frame(self, amount):
         """" Switches between the 2 frames"""
         if amount == 1:
@@ -104,57 +96,70 @@ class InfoCollectorGUI:
             self.f2.grid_forget()
             self.f1.grid()
 
-    def data_collecter(self):
-        """" Creates a Person object using the data entered and adds it into the 
-        list of all people"""
-        self.list_all_people.append(Person(self.e1.get(),self.e2.get(), self.v.get()))
-        #Clears frame page
-        self.e1.delete(0, END)
-        self.e2.delete(0, END)
-        self.v.set(0)
-        self.e1.focus()
-        self.sv_name.set(self.list_all_people[0].name) 
-        self.iv_age.set(self.list_all_people[0].age)
-        if self.list_all_people[0].phone_status == 0:
+    def variable_set(self, index):
+        """Sets the textvariables and intvariables to current objects index."""
+        self.sv_name.set(self.list_all_people[index].name) 
+        self.iv_age.set(self.list_all_people[index].age)
+        if self.list_all_people[index].phone_status == 0:
             self.sv_phone_status.set("Person does not have a mobile phone")
         else:
             self.sv_phone_status.set("Person does have a mobile phone")
-        self.bt1.configure(state = 'active')
-        
-    
+
+    def data_collecter(self):
+        """
+        Provides an error message if Name is over 16 characters long, age in negitive or not an interger.
+        Creates a Person object using the data entered and adds it into the list of all people.
+        """
+        #If name entered is over 16 characters long an error message will be displayed
+        if len(str(self.e1.get())) > 16:
+            messagebox.showerror("ErroR", "Name can't be over 16 characters")
+        else:
+            #Checks if the age entered is an interger and will displayed an error message if so
+            try:
+                #Checks if the age entered is negative and will displayed an error message if so
+                if int((self.e2.get())) < 0:
+                    messagebox.showerror("ErroR", "Age can not be negative")
+                else:
+                    #Creates a Person object using the data entered and adds it into the list of all people
+                    self.list_all_people.append(Person(self.e1.get(),self.e2.get(), self.v.get()))
+                    #Clears frame page
+                    self.e1.delete(0, END)
+                    self.e2.delete(0, END)
+                    self.v.set(0)
+                    self.e1.focus()
+                    self.variable_set(0)
+                    #Activates bt1 (the show all button) 
+                    self.bt1.configure(state = 'active')
+                    #Only activates the bt5 (the next button) when there is over 1 Person object in the list
+                    if len(self.list_all_people) > 1:
+                        self.bt5.configure(state = 'active')
+            except:
+                messagebox.showerror("ErroR", "Age has to be an interger")
+
     def next(self):
+        """ Method for bt5, displays the data of the next Person object in the list."""
         len_list = len(self.list_all_people)
         if self.page_num == len_list:
             self.bt5.configure(state = 'disabled')
         else:
             self.page_num += 1
-            self.sv_name.set(self.list_all_people[self.page_num-1].name) 
-            self.iv_age.set(self.list_all_people[self.page_num-1].age)
-            if self.list_all_people[self.page_num-1].phone_status == 0:
-                self.sv_phone_status.set("Person does not have a mobile phone")
-            else:
-                self.sv_phone_status.set("Person does have a mobile phone")
+            self.variable_set(self.page_num-1)
         self.bt4.configure(state = 'active')
         if self.page_num == len_list:
             self.bt5.configure(state = 'disabled')
         print(self.page_num)
     
     def prev(self):
+        """ Method for bt4, displays the data of the previous Person object in the list."""
         if self.page_num == 1:
             self.bt4.configure(state = 'disabled')
         else:
             self.page_num -= 1
-            self.sv_name.set(self.list_all_people[self.page_num-1].name) 
-            self.iv_age.set(self.list_all_people[self.page_num-1].age)
-            if self.list_all_people[self.page_num-1].phone_status == 0:
-                self.sv_phone_status.set("Person does not have a mobile phone")
-            else:
-                self.sv_phone_status.set("Person does have a mobile phone")
+            self.variable_set(self.page_num-1)
         self.bt5.configure(state = 'active')
         if self.page_num == 1:
             self.bt4.configure(state = 'disabled')
         print(self.page_num)
-            
             
 if __name__=="__main__":
     root = Tk()
