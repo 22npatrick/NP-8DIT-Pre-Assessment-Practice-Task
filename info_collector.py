@@ -18,9 +18,9 @@ class InfoCollectorGUI:
         self.v = IntVar()
         self.v.set(0)
 
-        self.num_people = 0
-
         self.list_all_people = []
+
+        self.page_num = 1
 
         #Frame 1
         self.lb1 = Label(self.f1, text = "Collecting Person Data", bg="pink")
@@ -90,7 +90,7 @@ class InfoCollectorGUI:
         self.bt4 = Button(self.f2, text = "Previous", state = 'disabled')
         self.bt4.grid(row = 8, column = 0)
         
-        self.bt5 = Button(self.f2, text = "Next")
+        self.bt5 = Button(self.f2, text = "Next", command = self.next)
         self.bt5.grid(row = 8, column = 2)
         #"Person (has)/(does not has) a mobile phone"
         #grid f1
@@ -116,6 +116,23 @@ class InfoCollectorGUI:
         self.sv_name.set(self.list_all_people[0].name) 
         self.sv_age.set(self.list_all_people[0].age)
         self.sv_phone_status.set(self.list_all_people[0].phone_status)
+    
+    def next(self):
+        len_list = len(self.list_all_people)
+        if self.page_num == len_list:
+            self.bt5.configure(state = 'disabled')
+        else:
+            self.page_num += 1
+            self.sv_name.set(self.list_all_people[self.page_num-1].name) 
+            self.sv_age.set(self.list_all_people[self.page_num-1].age)
+            self.sv_phone_status.set(self.list_all_people[self.page_num-1].phone_status)
+        self.bt4.configure(state = 'active')
+        if self.page_num == len_list:
+            self.bt5.configure(state = 'disabled')
+        print(self.page_num)
+                    
+            
+
 
 
 
