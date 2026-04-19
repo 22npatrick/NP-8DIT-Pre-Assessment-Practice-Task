@@ -2,6 +2,13 @@
 
 from tkinter import *
 
+class Person:
+    def __init__(self, name, age, phone_status):
+        self.name = name
+        self.age = age
+        self.phone_status = phone_status
+
+
 class InfoCollectorGUI:
     def __init__(self, parent):
         """ Constructor function"""
